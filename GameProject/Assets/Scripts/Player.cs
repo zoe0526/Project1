@@ -23,17 +23,21 @@ public class Player : MonoBehaviour
     {
         float vertical = Input.GetAxis("Vertical");
         float horizontal = Input.GetAxis("Horizontal");
-
+        Vector3 fixeddir=new Vector3(0, 0, 0);
         mAnimator.SetBool("ISWalk", false);
         Vector3 Move = new Vector3(horizontal, 0, vertical);
         Move = Move.normalized * mSpeed;
-        
         mRB.transform.position += Move * Time.deltaTime;
-        mRB.transform.LookAt(mRB.transform.position);
-        Vector3 lookdir = vertical * Vector3.forward + horizontal * Vector3.right;
 
-        mRB.transform.rotation = Quaternion.LookRotation(lookdir);
-        if(Move!=Vector3.zero)
+        Vector3 lookdir = vertical * Vector3.forward + horizontal * Vector3.right;
+       
+        fixeddir = lookdir;
+        while (fixeddir == lookdir)
+        {
+
+            mRB.transform.rotation = Quaternion.LookRotation(fixeddir);
+        }
+        if (Move!=Vector3.zero)
         {
             mAnimator.SetBool("ISWalk", true);
         }
